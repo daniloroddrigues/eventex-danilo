@@ -2,6 +2,9 @@
 
 Sistema de Eventos encomendado pela Morena.
 
+[![Build Status](https://travis-ci.org/daniloroddrigues/eventex-danilo.svg?branch=master)](https://travis-ci.org/daniloroddrigues/eventex-danilo)
+[![Code Health](https://landscape.io/github/daniloroddrigues/eventex-danilo/master/landscape.svg?style=flat)](https://landscape.io/github/daniloroddrigues/eventex-danilo/master)
+
 ## Como desenvolver?
 
 1. Clone o repositorio.
