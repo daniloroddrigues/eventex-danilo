@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from eventex.subscriptions.forms import SubscriptionForm
+from eventex.subscriptions.models import Subscription
 
 
 def subscribe(request):
@@ -16,7 +17,8 @@ def subscribe(request):
 
 
 def create(request):
-    """Valida post, caso seja valido retorna um http response redirect 302, se nao retorna um http response 200"""
+    """Valida post, caso seja valido retorna um http response redirect 302,
+    se nao retorna um http response 200"""
     form = SubscriptionForm(request.POST)
 
     if not form.is_valid():
@@ -28,6 +30,8 @@ def create(request):
                'Confirmaçao do inscriçao',
                settings.DEFAULT_FROM_EMAIL,
                form.cleaned_data['email'])
+
+    Subscription.objects.create(**form.cleaned_data)
 
     messages.success(request, 'Inscriçao realizada com sucesso!')
 
