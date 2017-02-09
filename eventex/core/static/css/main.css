@@ -380,4 +380,15 @@ section header h2 {
     border-color: #d0e9c6;
 }
 
+.speakers h2 {
+    text-transform: uppercase;
+}
+
+.speakers img {
+    max-width: 200px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+}
+
 /* Fim Customização */
