@@ -1,6 +1,8 @@
 from django.db import models
 from django.shortcuts import resolve_url as r
 
+from eventex.core.managers import KindQuerySet, PeriodManager
+
 
 class Speaker(models.Model):
     name = models.CharField('nome', max_length=255)
@@ -31,6 +33,10 @@ class Contact(models.Model):
     kind = models.CharField('tipo', max_length=1, choices=KINDS)
     value = models.CharField('valor', max_length=255)
 
+    # Meta programaçao - instancia um manager a partir do meu queryset,
+    # - isso acontece quando meu queryset esta muito alinhado com manager.
+    objects = KindQuerySet().as_manager()
+
     class Meta:
         verbose_name = 'contato'
         verbose_name_plural = 'contatos'
@@ -44,6 +50,8 @@ class Talk(models.Model):
     start = models.TimeField('inicio', blank=True, null=True)
     description = models.TextField('descriçao', blank=True)
     speakers = models.ManyToManyField('Speaker', verbose_name='palestrantes', blank=True)
+
+    objects = PeriodManager()
 
     class Meta:
         verbose_name = 'palestra'
