@@ -5,13 +5,13 @@ from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import ModelFormMixin
 
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
 
-class SubscriptionCreate(TemplateResponseMixin, FormMixin, View):
+class SubscriptionCreate(TemplateResponseMixin, ModelFormMixin, View):
     template_name = 'subscriptions/subscription_form.html'
     form_class = SubscriptionForm
 
@@ -40,9 +40,6 @@ class SubscriptionCreate(TemplateResponseMixin, FormMixin, View):
                    self.object.email)
 
         return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self):
-        return self.object.get_absolute_url()
 
 
 new = SubscriptionCreate.as_view()
