@@ -2,35 +2,34 @@ from django.conf import settings
 from django.core import mail
 from django.template.loader import render_to_string
 from django.views.generic import DetailView
-from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import BaseCreateView
+from django.views.generic.edit import CreateView
 
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
 
-class SubscriptionCreate(TemplateResponseMixin, BaseCreateView):
-    template_name = 'subscriptions/subscription_form.html'
+class SubscriptionCreate(CreateView):
+    model = Subscription
     form_class = SubscriptionForm
 
     def form_valid(self, form):
         """Form is valid"""
         response = super().form_valid(form)
-
-        _send_mail('subscriptions/subscription_email.txt',
-                   {'subscription': self.object},
-                   'Confirmaçao do inscriçao',
-                   settings.DEFAULT_FROM_EMAIL,
-                   self.object.email)
-
+        self.send_email()
         return response
+
+    def send_email(self):
+        # Send subscription email
+        template_name = 'subscriptions/subscription_email.txt'
+        context = {'subscription': self.object}
+        subject = 'Confirmaçao do inscriçao'
+        from_ = settings.DEFAULT_FROM_EMAIL
+        to = self.object.email
+
+        body = render_to_string(template_name, context)
+        return mail.send_mail(subject, body, from_, [from_, to])
 
 
 new = SubscriptionCreate.as_view()
 
 detail = DetailView.as_view(model=Subscription)
-
-
-def _send_mail(template_name, context, subject, from_, to):
-    body = render_to_string(template_name, context)
-    mail.send_mail(subject, body, from_, [from_, to])
